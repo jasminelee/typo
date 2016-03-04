@@ -24,9 +24,14 @@ class Admin::CategoriesController < Admin::BaseController
   private
 
   def new_or_edit
-    @categories = Category.find(:all)
-    @category = Category.find(params[:id])
+    # puts params
+    if !params.has_key?(:id) || params[:id] == nil
+      @category = Category.new()
+    else
+      @category = Category.find(params[:id])
+    end 
     @category.attributes = params[:category]
+    @categories = Category.find(:all)
     if request.post?
       respond_to do |format|
         format.html { save_category }
