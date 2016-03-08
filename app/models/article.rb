@@ -98,8 +98,10 @@ class Article < Content
     other = Article.find_by_id(merge_id)
     others_comments = other.comments
     curr = Article.find_by_id(self_id)
-    new = Article.new(:categories => curr.categories, :text_filter_id => curr.text_filter_id, :published => curr.published, :extended => curr.extended, :excerpt => curr.excerpt, :user_id => curr.user_id, :body => curr.body + other.body, :title => curr.title,  :author => curr.author,:allow_comments => curr.allow_comments, :comments => curr.comments + others_comments)
-    other.destroy
+    curr_comments = curr.comments
+    new = Article.new(:categories => curr.categories, :text_filter_id => curr.text_filter_id, :published => curr.published, :extended => curr.extended, :excerpt => curr.excerpt, :user_id => curr.user_id, :body => curr.body + other.body, :title => curr.title,  :author => curr.author,:allow_comments => curr.allow_comments, :comments => curr_comments + others_comments)
+    other.published = false
+    curr.published = false
     new
   end
 
