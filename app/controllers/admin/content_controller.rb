@@ -141,7 +141,7 @@ class Admin::ContentController < Admin::BaseController
 
   def new_or_edit
     if !current_user.admin?
-      redirect_to root_url
+      redirect_to root_path
     end
     id = params[:id]
     id = params[:article][:id] if params[:article] && params[:article][:id]
