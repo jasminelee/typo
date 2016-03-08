@@ -151,7 +151,7 @@
   <div class=''>
     <h4><%= _("Merge Articles") %></h4>
     <div class=''>
-      <% if current_user.admin? %>
+      <% if @current_user.admin? %>
         <%= text_field_tag("merge_id") %>  
         <input type="text" name="merge_with" value="Dummy To Pass the Autograder"> </input>
         <span class='help-block'><%=_("List the ID of the article you want to merge this article with") %></span>
