@@ -167,13 +167,13 @@ class Admin::ContentController < Admin::BaseController
       save_attachments
       
       @article.state = "draft" if @article.draft
-
+      puts params 
       if @article.save
         destroy_the_draft unless @article.draft
         set_article_categories
         set_the_flash
         #MYCODE
-        if params.has_key?(:merge_id) || params[:merge_id] != nil || params[:merge_id] == ''
+        if params[:merge_id] != ''
           other_id = params[:merge_id]
           curr_id = @article.id
           temp = Article.new.merge(curr_id, other_id)
