@@ -97,7 +97,7 @@ class Article < Content
   def merge(self_id, merge_id)
     other = Article.find_by_id(merge_id)
     curr = Article.find_by_id(self_id)
-    new = Article.new(:text_filter_id => curr.text_filter_id, :published => curr.published, :extended => curr.extended, :excerpt => curr.excerpt, :user_id => curr.user_id, :body => curr.body + other.body, :title => curr.title,  :author => curr.author,:allow_comments => curr.allow_comments, :comments => curr.comments + other.comments)
+    new = Article.new(:categories => curr.categories, :text_filter_id => curr.text_filter_id, :published => curr.published, :extended => curr.extended, :excerpt => curr.excerpt, :user_id => curr.user_id, :body => curr.body + other.body, :title => curr.title,  :author => curr.author,:allow_comments => curr.allow_comments, :comments => curr.comments + other.comments)
     new
   end
 
