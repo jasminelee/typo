@@ -3,6 +3,7 @@ require 'base64'
 module Admin; end
 class Admin::ContentController < Admin::BaseController
   layout "administration", :except => [:show, :autosave]
+  before_filter :authorize_admin, :only => [:index, :new_or_edit]
 
   cache_sweeper :blog_sweeper
 
@@ -12,6 +13,7 @@ class Admin::ContentController < Admin::BaseController
   end
 
   def index
+    
     @search = params[:search] ? params[:search] : {}
     @articles = Article.search_with_pagination(@search, {:page => params[:page], :per_page => this_blog.admin_display_elements})
     # @articles = Article.all
@@ -140,9 +142,7 @@ class Admin::ContentController < Admin::BaseController
   def real_action_for(action); { 'add' => :<<, 'remove' => :delete}[action]; end
 
   def new_or_edit
-    if !current_user.admin?
-      redirect_to root_path
-    end
+
     id = params[:id]
     id = params[:article][:id] if params[:article] && params[:article][:id]
     @article = Article.get_or_build_article(id)
@@ -251,5 +251,12 @@ class Admin::ContentController < Admin::BaseController
 
   def setup_resources
     @resources = Resource.by_created_at
+  end
+  
+  private 
+  
+  def authorize_admin
+    return unless !current_user.admin?
+    redirect_to root_path, alert: 'Admins only!'
   end
 end
