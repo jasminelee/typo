@@ -176,12 +176,10 @@ class Admin::ContentController < Admin::BaseController
         set_article_categories
         set_the_flash
         #MYCODE
-        if params[:merge_id] != ''
+        if params[:merge_id].present?
           other_id = params[:merge_id]
           curr_id = @article.id
-          temp = Article.new.merge(curr_id, other_id)
-          @article = temp
-          @article.save
+          @article = Article.new.merge(curr_id, other_id)
           @article
         end
         redirect_to :action => 'index'
@@ -256,7 +254,7 @@ class Admin::ContentController < Admin::BaseController
   private 
   
   def authorize_admin
-    return unless !current_user.admin?
+    return unless !@current_user.admin?
     redirect_to root_path, alert: 'Admins only!'
   end
 end
