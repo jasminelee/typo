@@ -13,9 +13,9 @@ class Admin::ContentController < Admin::BaseController
 
   def index
     @search = params[:search] ? params[:search] : {}
-    
     @articles = Article.search_with_pagination(@search, {:page => params[:page], :per_page => this_blog.admin_display_elements})
-
+    # @articles = Article.all
+    
     if request.xhr?
       render :partial => 'article_list', :locals => { :articles => @articles }
     else
@@ -172,6 +172,15 @@ class Admin::ContentController < Admin::BaseController
         destroy_the_draft unless @article.draft
         set_article_categories
         set_the_flash
+        #MYCODE
+        if params.has_key?(:merge_id) || params[:merge_id] != nil || params[:merge_id] == ''
+          other_id = params[:merge_id]
+          curr_id = @article.id
+          temp = Article.new.merge(curr_id, other_id)
+          @article = temp
+          @article.save
+          @article
+        end
         redirect_to :action => 'index'
         return
       end

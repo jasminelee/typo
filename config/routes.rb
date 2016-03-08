@@ -20,6 +20,11 @@ Rails.application.routes.draw do
 
   match 'admin', :to  => 'admin/dashboard#index', :format => false, :as => :admin_dashboard
 
+  #  MY CODE
+
+#  post 'admin/content/merge/:id' => 'admin/content#merge'
+  # match 'admin/content/merge/:id', :to => 'admin/content#merge', :via => [:post]
+  
   match 'articles.:format', :to => 'articles#index', :constraints => {:format => 'rss'}, :as => 'rss'
   match 'articles.:format', :to => 'articles#index', :constraints => {:format => 'atom'}, :as => 'atom'
 

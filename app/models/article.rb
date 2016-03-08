@@ -12,6 +12,8 @@ class Article < Content
 
   validates_uniqueness_of :guid
   validates_presence_of :title
+  
+  attr_accessor :merge_id
 
   belongs_to :user
 
@@ -91,6 +93,13 @@ class Article < Content
                                :post_trigger,
                                :send_pings, :send_notifications,
                                :published_at=, :just_published?])
+                               
+  def merge(self_id, merge_id)
+    other = Article.find_by_id(merge_id)
+    curr = Article.find_by_id(self_id)
+    new = Article.new(:text_filter_id => curr.text_filter_id, :published => curr.published, :extended => curr.extended, :excerpt => curr.excerpt, :user_id => curr.user_id, :body => curr.body + other.body, :title => curr.title,  :author => curr.author, :comments => curr.comments + other.comments)
+    new
+  end
 
   include Article::States
 
@@ -106,8 +115,7 @@ class Article < Content
     def search_with_pagination(search_hash, paginate_hash)
       
       state = (search_hash[:state] and ["no_draft", "drafts", "published", "withdrawn", "pending"].include? search_hash[:state]) ? search_hash[:state] : 'no_draft'
-      
-      
+
       list_function  = ["Article.#{state}"] + function_search_no_draft(search_hash)
 
       if search_hash[:category] and search_hash[:category].to_i > 0
@@ -466,4 +474,6 @@ class Article < Content
     to = to - 1 # pull off 1 second so we don't overlap onto the next day
     return from..to
   end
+  
+
 end

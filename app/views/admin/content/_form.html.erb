@@ -146,7 +146,18 @@
     <ul id='attachments' class='inputs-list'>
       <%= render 'admin/content/attachment', { :attachment_num => 1, :hidden => false } -%>
     </ul>
-  </div>    
+  </div>
+  
+  <div class=''>
+    <h4><%= _("Merge Article") %></h4>
+    <div class=''>
+      <%= text_field_tag("merge_id") %>  
+
+      <!--<%= text_field 'article', 'merge_id', {:height => '150', :style => 'width: 100%', :rows => '5'} %>-->
+      <span class='help-block'><%=_("List the ID of the article you want to merge this article with") %></span>
+    </div>
+  </div>
+  
   </div>
 
 </div>
