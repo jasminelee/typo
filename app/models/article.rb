@@ -100,7 +100,7 @@ class Article < Content
 
     curr = Article.find_by_id(self_id)
     curr_comments = curr.comments
-    curr.body = curr.body + "" + other.body
+    curr.body = curr.body + other.body
     # new_article = Article.create(:categories => curr.categories, :text_filter_id => curr.text_filter_id, :published => curr.published, :extended => curr.extended, :excerpt => curr.excerpt, :user_id => curr.user_id, :body => curr.body + other.body, :title => curr.title,  :author => curr.author,:allow_comments => curr.allow_comments)
 
     # curr_comments.each do |comment|
