@@ -147,6 +147,16 @@ class Admin::ContentController < Admin::BaseController
     id = params[:article][:id] if params[:article] && params[:article][:id]
     @article = Article.get_or_build_article(id)
     @article.text_filter = current_user.text_filter if current_user.simple_editor?
+  
+     #START MY CODE
+    if params[:merge_id].present?
+      other_id = params[:merge_id]
+      curr_id = @article.id
+      @article = Article.new.merge(curr_id, other_id)
+      @article
+      # redirect_to :action => 'index'
+    end
+    #END MY CODE
 
     @post_types = PostType.find(:all)
     if request.post?
@@ -175,14 +185,6 @@ class Admin::ContentController < Admin::BaseController
         destroy_the_draft unless @article.draft
         set_article_categories
         set_the_flash
-        #START MY CODE
-        if params[:merge_id].present?
-          other_id = params[:merge_id]
-          curr_id = @article.id
-          @article = Article.new.merge(curr_id, other_id)
-          @article
-        end
-        #END MY CODE
         redirect_to :action => 'index'
         return
       end
