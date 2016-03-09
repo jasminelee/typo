@@ -113,12 +113,14 @@ class Article < Content
     end 
     
     new_article.save 
-    other.title = "old-" + other.title
-    other.body = "old-"+other.body
-    other.save
-    curr.title = "old-" + curr.title
-    curr.body= "old-"+curr.body
-    curr.save
+    other.destroy
+    curr.destroy
+    # other.title = "old-" + other.title
+    # other.body = "old-"+other.body
+    # other.save
+    # curr.title = "old-" + curr.title
+    # curr.body= "old-"+curr.body
+    # curr.save
     new_article
   end
 
