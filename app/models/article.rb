@@ -109,7 +109,7 @@ class Article < Content
     # end 
     
     others_comments.each do |comment|
-      comment.article = curr
+      comment.article_id = curr.id
       comment.save
     end 
     
