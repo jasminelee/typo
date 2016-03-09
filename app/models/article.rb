@@ -104,16 +104,20 @@ class Article < Content
 
     curr_comments.each do |comment|
       comment.article = new_article
+      comment.save
     end 
     
     others_comments.each do |comment|
       comment.article = new_article
+      comment.save
     end 
     
     new_article.save 
     other.title = "old-" + other.title
+    other.body = "old-"+other.body
     other.save
     curr.title = "old-" + curr.title
+    curr.body= "old-"+curr.body
     curr.save
     new_article
   end
