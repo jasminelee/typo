@@ -152,8 +152,21 @@ class Admin::ContentController < Admin::BaseController
     if params[:merge_id].present?
       other_id = params[:merge_id]
       curr_id = @article.id
-      @article = Article.new.merge(curr_id, other_id)
-      @article
+      other = Article.find_by_id(other_id)
+      curr = Article.find_by_id(curr_id)
+      
+      curr.body = curr.body + other.body
+      
+      other.comments.each do |comment|
+        comment.article_id = curr_id
+        comment.save 
+      end 
+      curr.save
+      other.title = "old" + other.title
+      other.save
+      @article = curr
+#      @article = Article.new.merge(curr_id, other_id)
+      # @article
       # redirect_to :action => 'index'
     end
     #END MY CODE
