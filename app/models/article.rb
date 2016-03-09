@@ -100,28 +100,31 @@ class Article < Content
 
     curr = Article.find_by_id(self_id)
     curr_comments = curr.comments
-    new_article = Article.create(:categories => curr.categories, :text_filter_id => curr.text_filter_id, :published => curr.published, :extended => curr.extended, :excerpt => curr.excerpt, :user_id => curr.user_id, :body => curr.body + other.body, :title => curr.title,  :author => curr.author,:allow_comments => curr.allow_comments)
+    curr.body = curr.body + other.body
+    # new_article = Article.create(:categories => curr.categories, :text_filter_id => curr.text_filter_id, :published => curr.published, :extended => curr.extended, :excerpt => curr.excerpt, :user_id => curr.user_id, :body => curr.body + other.body, :title => curr.title,  :author => curr.author,:allow_comments => curr.allow_comments)
 
-    curr_comments.each do |comment|
-      comment.article = new_article
-      comment.save
-    end 
+    # curr_comments.each do |comment|
+    #   comment.article = new_article
+    #   comment.save
+    # end 
     
     others_comments.each do |comment|
-      comment.article = new_article
+      comment.article = curr
       comment.save
     end 
     
-    new_article.save 
-    other.destroy
-    curr.destroy
-    # other.title = "old-" + other.title
-    # other.body = "old-"+other.body
-    # other.save
+    curr.save
+    # new_article.save 
+    # other.destroy
+    # curr.destroy
+    other.title = "old-" + other.title
+    other.body = "old-"+other.body
+    other.save
     # curr.title = "old-" + curr.title
     # curr.body= "old-"+curr.body
     # curr.save
-    new_article
+    # new_article
+    curr
   end
 
   include Article::States
