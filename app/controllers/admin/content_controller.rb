@@ -175,13 +175,14 @@ class Admin::ContentController < Admin::BaseController
         destroy_the_draft unless @article.draft
         set_article_categories
         set_the_flash
-        #MYCODE
+        #START MY CODE
         if params[:merge_id].present?
           other_id = params[:merge_id]
           curr_id = @article.id
           @article = Article.new.merge(curr_id, other_id)
           @article
         end
+        #END MY CODE
         redirect_to :action => 'index'
         return
       end

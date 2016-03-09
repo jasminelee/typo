@@ -97,12 +97,24 @@ class Article < Content
   def merge(self_id, merge_id)
     other = Article.find_by_id(merge_id)
     others_comments = other.comments
+
     curr = Article.find_by_id(self_id)
     curr_comments = curr.comments
     new_article = Article.create(:categories => curr.categories, :text_filter_id => curr.text_filter_id, :published => curr.published, :extended => curr.extended, :excerpt => curr.excerpt, :user_id => curr.user_id, :body => curr.body + other.body, :title => curr.title,  :author => curr.author,:allow_comments => curr.allow_comments)
-    new.comments = others_comments + curr_comments
-    other.destroy
-    curr.destroy
+
+    curr_comments.each do |comment|
+      comment.article = new_article
+    end 
+    
+    others_comments.each do |comment|
+      comment.article = new_article
+    end 
+    
+    new_article.save 
+    other.title = "old-" + other.title
+    other.save
+    curr.title = "old-" + curr.title
+    curr.save
     new_article
   end
 
